@@ -1,0 +1,37 @@
+// https://facebook.github.io/react/docs/tutorial.html
+// https://guides.github.com/features/mastering-markdown/
+var MarkdownPreviewer = React.createClass({ // react class
+  updateState: function(event) { // update the content of preview
+    this.setState({ // set state to updated content
+      value: event.target.value
+    });
+  },
+  getInitialState: function() { // get initial state
+    return {
+      value: 'Heading\n=======\n\nSub-heading\n-----------\n \n### Another deeper heading\n \nParagraphs are separated by a blank line.\n\nLeave 2 spaces at the end of a line to do a  \nline break\n\nText attributes *italic*, **bold**, `monospace`, ~~strikethrough~~ .\n\nShopping list:\n\n  * apples\n  * oranges\n  * pears\n\nNumbered list:\n\n  1. apples\n  2. oranges\n  3. pears\n\n*[Herman Fassett](https://freecodecamp.com/hermanfassett)*\n\nAs Kanye West said:\n> We are living the future so the present is our past.\n\n ```javascript\n    function fancyAlert(arg) {\n      if(arg) {\n        $.facebox({div:"#foo"})\n      }\n    }\n```'
+    }
+  },
+  rawMarkup: function(value) { // get content and change it through marked()
+    var rawMarkup = marked(value);
+    return {
+      __html: rawMarkup
+    };
+  },
+  render: function() { // render react output
+    return (
+      <div className="row">
+            <div className="col-md-6">
+              <textarea rows="40" type="text" ref="inputValue" onChange={this.updateState} value={this.state.value} className="form-control" />
+            </div>
+            <div className="col-md-6">
+              <span dangerouslySetInnerHTML={this.rawMarkup(this.state.value)} />
+            </div>
+          </div>
+    );
+  }
+});
+
+// create react element
+var reactElement = ReactDOM.render(React.createElement(MarkdownPreviewer),
+  document.getElementById("container")
+);
